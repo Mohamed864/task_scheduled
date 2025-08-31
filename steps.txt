@@ -1,0 +1,58 @@
+start by backend :
+
+//first step: apply setups of project
+
+1-
+composer create-project laravel/laravel task-manager "12.*"
+cd task-manager
+
+2- edit db in env file
+
+3-
+composer require laravel/sanctum
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+php artisan migrate
+
+4- php artisan install:api
+
+5- i am going to add HasApiTokens
+      to user model
+
+6-  php artisan make:middleware VerifyCsrfToken
+    declare verify_csrf_token as a middleware  
+
+7-  i am going to middleware verify_csrf_token to make this middleware
+    manage api/* to be protected by it
+
+8- go to the folder of composer
+    make allowed_origins point to the localhost of frontend
+    'allowed_origins' => ['http://localhost:5173'],   
+    'supports_credentials' => true,
+
+9- go to sanctum.php in config add localhost:5173
+
+//second step: start to build the app arch.
+
+1- php artisan make:controller Api/AuthController
+
+2- php artisan make:request LoginRequest
+3- php artisan make:request RegisterRequest
+
+-> Auth done
+
+4- go to to create everything for task:
+
+- php artisan make:migration create_tasks_table --create=tasks
+- php artisan migrate
+- php artisan make:model Task
+- php artisan make:request StoreTaskRequest
+- php artisan make:request UpdateTaskRequest
+- edit user model with new functions
+- create policy to add policies on users to control tasks
+- add policy file in the array of policies to app/providers
+- create controller for tasks and resource for review data of task in json form
+- create factories to create data
+- create test class called tests/Feature/TaskPermissionsTest
+  in order to prove if i am creator of task and dont assigned to this task 
+  can see it and gives 403 
+
