@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    // user register
+    //user register
     public function register(RegisterRequest $request){
 
         $data = $request->validated();
@@ -27,7 +27,7 @@ class AuthController extends Controller
 
     }
 
-    // user login
+    //user login
     public function login(LoginRequest $request){
 
         $credentials = $request->validated();
@@ -42,7 +42,9 @@ class AuthController extends Controller
             $token = $user->createToken('main')->plainTextToken;
         }
 
-        return response()->json(['user' => $user, 'token' => $token], 201);
+
+
+        return response()->json(['user' => ['id' => $user->id, 'name' => $user->name, 'email' => $user->email], 'token' => $token], 201);
     }
 
     //get user for dashboard

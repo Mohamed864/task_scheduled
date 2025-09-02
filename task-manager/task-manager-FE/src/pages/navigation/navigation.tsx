@@ -57,7 +57,7 @@ const Navigation: React.FC = () => {
                         {token ? (
                             <>
                                 <li className="text-gray-600 text-sm">
-                                    {user?.email}
+                                    {user?.name}
                                 </li>
                                 <li>
                                     <button
@@ -120,7 +120,7 @@ const Navigation: React.FC = () => {
                             {token ? (
                                 <>
                                     <li className="text-gray-600 text-sm">
-                                        {user?.email}
+                                        {user?.name}
                                     </li>
                                     <li>
                                         <button

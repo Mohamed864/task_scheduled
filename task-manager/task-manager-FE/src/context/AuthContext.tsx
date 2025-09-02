@@ -4,17 +4,23 @@ import api from "../services/api";
 
 interface AuthState {
     token: string | null;
-    user: { email: string } | null;
+    user: { email: string; name: string } | null;
 }
 
 type AuthAction =
-    | { type: "LOGIN"; payload: { token: string; user: { email: string } } }
+    | {
+          type: "LOGIN";
+          payload: { token: string; user: { email: string; name: string } };
+      }
     | { type: "LOGOUT" };
 
 const initialState: AuthState = {
     token: localStorage.getItem("USER_TOKEN"),
     user: localStorage.getItem("USER_EMAIL")
-        ? { email: localStorage.getItem("USER_EMAIL")! }
+        ? {
+              email: localStorage.getItem("USER_EMAIL")!,
+              name: localStorage.getItem("USER_NAME")!,
+          }
         : null,
 };
 
@@ -48,6 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const { token, user } = res.data;
         localStorage.setItem("USER_TOKEN", token);
         localStorage.setItem("USER_EMAIL", user.email);
+        localStorage.setItem("USER_NAME", user.name);
         dispatch({ type: "LOGIN", payload: { token, user } });
     };
 
