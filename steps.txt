@@ -73,25 +73,21 @@ npx tailwindcss init -p
 create .env & .env.example file in root to add VITE_API_BASE_URL=http://localhost:8000
 
 i am going to create this archectiture
-src/ 
-│ 
-├── context/ 
-│ └── AuthContext.tsx 
-│ 
-├── services/ 
-│ ├── api.ts -> main has request and respond 
-│ ├── taskService.ts 
-│ └── userService.ts 
-│ 
-├── pages/ 
-│ ├── Dashboard 
-│ └── UserDashboard.tsx 
-│ ├── task 
-│ │ ├── create.tsx 
-│ │ ├── edit.tsx 
-│ │ └── index.tsx 
-│ ├── login.tsx 
-│ ├── navigation.tsx 
-│ └── register.tsx 
-│ 
-└── App.tsx
+src/
+├── context/
+│   └── AuthContext.tsx
+├── services/
+│   ├── api.ts
+│   ├── taskService.ts
+│   └── userService.ts
+├── pages/
+│   ├── login.tsx
+│   ├── register.tsx
+│   └── task/
+│       ├── index.tsx       
+│       ├── create.tsx
+│       └── edit.tsx
+│   └── Navigation.tsx
+├── App.tsx
+├── main.tsx
+└── index.css
