@@ -1,8 +1,8 @@
 // src/App.tsx
 
 import React, { type JSX } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 import Login from "./pages/login/login";
 import Register from "./pages/register/register";
 import TaskList from "./pages/task/index";
