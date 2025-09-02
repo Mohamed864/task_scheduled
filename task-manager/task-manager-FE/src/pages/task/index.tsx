@@ -45,6 +45,8 @@ const TaskList: React.FC = () => {
 
                 <div className="flex flex-col md:flex-row gap-4 mb-6">
                     <select
+                        aria-label="Task Statuses"
+                        name="Statuses"
                         className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
@@ -60,6 +62,8 @@ const TaskList: React.FC = () => {
                     </select>
 
                     <select
+                        aria-label="Task priority"
+                        name="priority"
                         className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         value={priorityFilter}
                         onChange={(e) => setPriorityFilter(e.target.value)}
