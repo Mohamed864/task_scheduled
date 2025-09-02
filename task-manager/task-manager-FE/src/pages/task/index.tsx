@@ -19,6 +19,11 @@ const TaskList: React.FC = () => {
     const [statusFilter, setStatusFilter] = useState<string>("");
     const [priorityFilter, setPriorityFilter] = useState<string>("");
 
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+    const [newAssignee, setNewAssignee] = useState("");
+    const [modalError, setModalError] = useState("");
+
     const fetchTasks = async () => {
         setLoading(true);
         try {
@@ -37,6 +42,18 @@ const TaskList: React.FC = () => {
     useEffect(() => {
         if (token) fetchTasks();
     }, [token, statusFilter, priorityFilter]);
+
+    const handleReassign = async () => {
+        if (!selectedTaskId) return;
+        try {
+            await taskService.reassign(selectedTaskId, newAssignee);
+            setModalOpen(false);
+            setNewAssignee("");
+            fetchTasks();
+        } catch (err: any) {
+            setModalError(err.response?.data?.message || "Failed to reassign");
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 px-4 py-6">
@@ -150,11 +167,57 @@ const TaskList: React.FC = () => {
                                             >
                                                 Toggle Complete
                                             </button>
+                                            <button
+                                                className="text-white bg-red-500 px-3 py-1 rounded-lg hover:bg-red-600 transition"
+                                                onClick={() => {
+                                                    setSelectedTaskId(task.id);
+                                                    setModalOpen(true);
+                                                }}
+                                            >
+                                                Reassign
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
+                        {isModalOpen && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                <div className="bg-white rounded-lg shadow p-6 w-full max-w-md">
+                                    <h3 className="text-lg font-semibold mb-4">
+                                        Reassign Task
+                                    </h3>
+                                    {modalError && (
+                                        <div className="bg-red-100 text-red-700 p-2 rounded mb-3">
+                                            {modalError}
+                                        </div>
+                                    )}
+                                    <input
+                                        type="email"
+                                        placeholder="Assignee Email"
+                                        className="w-full border px-3 py-2 mb-4 rounded"
+                                        value={newAssignee}
+                                        onChange={(e) =>
+                                            setNewAssignee(e.target.value)
+                                        }
+                                    />
+                                    <div className="flex justify-end space-x-2">
+                                        <button
+                                            onClick={() => setModalOpen(false)}
+                                            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            onClick={handleReassign}
+                                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                        >
+                                            Confirm
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
