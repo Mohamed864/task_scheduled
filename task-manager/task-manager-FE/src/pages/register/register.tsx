@@ -33,96 +33,135 @@ const Register: React.FC = () => {
     };
 
     return (
-        <div className="container my-4" style={{ maxWidth: 400 }}>
-            <h2>Register</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="name">Name</label>
-                    <input
-                        id="name"
-                        type="text"
-                        className={`form-control ${
-                            errors.name ? "is-invalid" : ""
-                        }`}
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                    {errors.name && (
-                        <div className="invalid-feedback">{errors.name}</div>
-                    )}
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="email">Email</label>
-                    <input
-                        id="email"
-                        type="email"
-                        className={`form-control ${
-                            errors.email ? "is-invalid" : ""
-                        }`}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    {errors.email && (
-                        <div className="invalid-feedback">{errors.email}</div>
-                    )}
-                </div>
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 px-4">
+            <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">
+                    Create an Account
+                </h2>
 
-                <div className="mb-3">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        id="password"
-                        type="password"
-                        className={`form-control ${
-                            errors.password ? "is-invalid" : ""
-                        }`}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    {errors.password && (
-                        <div className="invalid-feedback">
-                            {errors.password}
-                        </div>
-                    )}
-                </div>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                        <label
+                            htmlFor="name"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Name
+                        </label>
+                        <input
+                            id="name"
+                            type="text"
+                            className={`w-full px-4 py-2 rounded-lg border ${
+                                errors.name
+                                    ? "border-red-500"
+                                    : "border-gray-300"
+                            } focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                        {errors.name && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.name}
+                            </p>
+                        )}
+                    </div>
 
-                <div className="mb-3">
-                    <label htmlFor="password_confirmation">
-                        Confirm Password
-                    </label>
-                    <input
-                        id="password_confirmation"
-                        type="password"
-                        className={`form-control ${
-                            errors.password_confirmation ? "is-invalid" : ""
-                        }`}
-                        value={passwordConfirmation}
-                        onChange={(e) =>
-                            setPasswordConfirmation(e.target.value)
-                        }
-                        required
-                    />
-                    {errors.password_confirmation && (
-                        <div className="invalid-feedback">
-                            {errors.password_confirmation}
-                        </div>
-                    )}
-                </div>
+                    <div>
+                        <label
+                            htmlFor="email"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Email
+                        </label>
+                        <input
+                            id="email"
+                            type="email"
+                            className={`w-full px-4 py-2 rounded-lg border ${
+                                errors.email
+                                    ? "border-red-500"
+                                    : "border-gray-300"
+                            } focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        {errors.email && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.email}
+                            </p>
+                        )}
+                    </div>
 
-                <button
-                    type="submit"
-                    className="btn btn-primary w-100"
-                    disabled={loading}
-                >
-                    {loading ? "Registering..." : "Register"}
-                </button>
+                    <div>
+                        <label
+                            htmlFor="password"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Password
+                        </label>
+                        <input
+                            id="password"
+                            type="password"
+                            className={`w-full px-4 py-2 rounded-lg border ${
+                                errors.password
+                                    ? "border-red-500"
+                                    : "border-gray-300"
+                            } focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        {errors.password && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.password}
+                            </p>
+                        )}
+                    </div>
 
-                <p className="mt-2 text-center">
-                    Already have an account? <Link to="/login">Login</Link>
+                    <div>
+                        <label
+                            htmlFor="password_confirmation"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Confirm Password
+                        </label>
+                        <input
+                            id="password_confirmation"
+                            type="password"
+                            className={`w-full px-4 py-2 rounded-lg border ${
+                                errors.password_confirmation
+                                    ? "border-red-500"
+                                    : "border-gray-300"
+                            } focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                            value={passwordConfirmation}
+                            onChange={(e) =>
+                                setPasswordConfirmation(e.target.value)
+                            }
+                            required
+                        />
+                        {errors.password_confirmation && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.password_confirmation}
+                            </p>
+                        )}
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-50"
+                    >
+                        {loading ? "Registering..." : "Register"}
+                    </button>
+                </form>
+
+                <p className="mt-6 text-center text-sm text-gray-600">
+                    Already have an account?{" "}
+                    <Link to="/login" className="text-blue-600 hover:underline">
+                        Login
+                    </Link>
                 </p>
-            </form>
+            </div>
         </div>
     );
 };

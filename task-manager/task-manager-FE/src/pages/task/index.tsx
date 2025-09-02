@@ -39,81 +39,121 @@ const TaskList: React.FC = () => {
     }, [token, statusFilter, priorityFilter]);
 
     return (
-        <div className="container my-4">
-            <h2>Tasks</h2>
-            <div className="d-flex mb-3">
-                <select
-                    className="form-select me-2"
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                >
-                    <option value="">All Statuses</option>
-                    {["Done", "Missed/Late", "Due Today", "Upcoming"].map(
-                        (s) => (
-                            <option key={s} value={s}>
-                                {s}
-                            </option>
-                        )
-                    )}
-                </select>
-                <select
-                    className="form-select"
-                    value={priorityFilter}
-                    onChange={(e) => setPriorityFilter(e.target.value)}
-                >
-                    <option value="">All Priorities</option>
-                    {["low", "medium", "high"].map((p) => (
-                        <option key={p} value={p}>
-                            {p}
-                        </option>
-                    ))}
-                </select>
-            </div>
+        <div className="min-h-screen bg-gray-50 px-4 py-6">
+            <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-2xl p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-6">Tasks</h2>
 
-            {loading ? (
-                <p>Loading tasks...</p>
-            ) : (
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Due</th>
-                            <th>Priority</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tasks.map((task) => (
-                            <tr key={task.id}>
-                                <td>{task.title}</td>
-                                <td>{task.due_date}</td>
-                                <td>{task.priority}</td>
-                                <td>{task.status}</td>
-                                <td>
-                                    <Link
-                                        to={`/tasks/edit/${task.id}`}
-                                        className="btn btn-sm btn-primary me-2"
-                                    >
-                                        Edit
-                                    </Link>
-                                    <button
-                                        className="btn btn-sm btn-success"
-                                        onClick={async () => {
-                                            await taskService.toggleComplete(
-                                                task.id
-                                            );
-                                            fetchTasks();
-                                        }}
-                                    >
-                                        Toggle Complete
-                                    </button>
-                                </td>
-                            </tr>
+                <div className="flex flex-col md:flex-row gap-4 mb-6">
+                    <select
+                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                    >
+                        <option value="">All Statuses</option>
+                        {["Done", "Missed/Late", "Due Today", "Upcoming"].map(
+                            (s) => (
+                                <option key={s} value={s}>
+                                    {s}
+                                </option>
+                            )
+                        )}
+                    </select>
+
+                    <select
+                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        value={priorityFilter}
+                        onChange={(e) => setPriorityFilter(e.target.value)}
+                    >
+                        <option value="">All Priorities</option>
+                        {["low", "medium", "high"].map((p) => (
+                            <option key={p} value={p}>
+                                {p}
+                            </option>
                         ))}
-                    </tbody>
-                </table>
-            )}
+                    </select>
+                </div>
+
+                {loading ? (
+                    <p className="text-gray-600">Loading tasks...</p>
+                ) : tasks.length === 0 ? (
+                    <p className="text-gray-500 text-center">No tasks found.</p>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
+                            <thead className="bg-gray-100">
+                                <tr>
+                                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                                        Title
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                                        Due
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                                        Priority
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                                        Status
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {tasks.map((task) => (
+                                    <tr
+                                        key={task.id}
+                                        className="border-t hover:bg-gray-50 transition"
+                                    >
+                                        <td className="px-4 py-2 text-gray-800">
+                                            {task.title}
+                                        </td>
+                                        <td className="px-4 py-2 text-gray-600">
+                                            {task.due_date}
+                                        </td>
+                                        <td className="px-4 py-2 capitalize">
+                                            <span
+                                                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                    task.priority === "high"
+                                                        ? "bg-red-100 text-red-700"
+                                                        : task.priority ===
+                                                          "medium"
+                                                        ? "bg-yellow-100 text-yellow-700"
+                                                        : "bg-green-100 text-green-700"
+                                                }`}
+                                            >
+                                                {task.priority}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            {task.status}
+                                        </td>
+                                        <td className="px-4 py-2 flex flex-wrap gap-2">
+                                            <Link
+                                                to={`/tasks/edit/${task.id}`}
+                                                className="px-3 py-1 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
+                                            >
+                                                Edit
+                                            </Link>
+                                            <button
+                                                className="px-3 py-1 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition"
+                                                onClick={async () => {
+                                                    await taskService.toggleComplete(
+                                                        task.id
+                                                    );
+                                                    fetchTasks();
+                                                }}
+                                            >
+                                                Toggle Complete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

@@ -17,7 +17,7 @@ const CreateTask: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-    // Debounce lookup
+    //check on if assigneeEmail exist or not
     useEffect(() => {
         const handler = setTimeout(() => {
             if (assigneeEmail.length > 2) {
@@ -39,7 +39,6 @@ const CreateTask: React.FC = () => {
         e.preventDefault();
         setLoading(true);
         setErrors({});
-
         try {
             await taskService.create({
                 title,
@@ -59,107 +58,143 @@ const CreateTask: React.FC = () => {
     };
 
     return (
-        <div className="container my-4">
-            <h2>Create New Task</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="title">Title</label>
-                    <input
-                        type="text"
-                        id="title"
-                        className={`form-control ${
-                            errors.title ? "is-invalid" : ""
-                        }`}
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                    />
-                    {errors.title && (
-                        <div className="invalid-feedback">{errors.title}</div>
-                    )}
-                </div>
+        <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+            <div className="w-full max-w-2xl bg-white shadow-lg rounded-2xl p-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">
+                    Create New Task
+                </h2>
 
-                <div className="mb-3">
-                    <label htmlFor="description">Description</label>
-                    <textarea
-                        id="description"
-                        className="form-control"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </div>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                        <label
+                            htmlFor="title"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Title
+                        </label>
+                        <input
+                            id="title"
+                            type="text"
+                            className={`w-full px-4 py-2 rounded-lg border ${
+                                errors.title
+                                    ? "border-red-500"
+                                    : "border-gray-300"
+                            } focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            required
+                        />
+                        {errors.title && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.title}
+                            </p>
+                        )}
+                    </div>
 
-                <div className="mb-3">
-                    <label>Due Date</label>
-                    <DatePicker
-                        className={`form-control ${
-                            errors.due_date ? "is-invalid" : ""
-                        }`}
-                        selected={dueDate}
-                        onChange={(date) => setDueDate(date as Date)}
-                        dateFormat="yyyy-MM-dd"
-                    />
-                    {errors.due_date && (
-                        <div className="invalid-feedback">
-                            {errors.due_date}
-                        </div>
-                    )}
-                </div>
+                    <div>
+                        <label
+                            htmlFor="description"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Description
+                        </label>
+                        <textarea
+                            id="description"
+                            rows={4}
+                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                    </div>
 
-                <div className="mb-3">
-                    <label htmlFor="priority">Priority</label>
-                    <select
-                        id="priority"
-                        className="form-select"
-                        value={priority}
-                        onChange={(e) => setPriority(e.target.value)}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Due Date
+                        </label>
+                        <DatePicker
+                            className={`w-full px-4 py-2 rounded-lg border ${
+                                errors.due_date
+                                    ? "border-red-500"
+                                    : "border-gray-300"
+                            } focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                            selected={dueDate}
+                            onChange={(date) => setDueDate(date as Date)}
+                            dateFormat="yyyy-MM-dd"
+                        />
+                        {errors.due_date && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.due_date}
+                            </p>
+                        )}
+                    </div>
+
+                    <div>
+                        <label
+                            htmlFor="priority"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Priority
+                        </label>
+                        <select
+                            id="priority"
+                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            value={priority}
+                            onChange={(e) => setPriority(e.target.value)}
+                        >
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+
+                    <div className="relative">
+                        <label
+                            htmlFor="assignee_email"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Assignee Email
+                        </label>
+                        <input
+                            id="assignee_email"
+                            type="text"
+                            className={`w-full px-4 py-2 rounded-lg border ${
+                                errors.assignee_email
+                                    ? "border-red-500"
+                                    : "border-gray-300"
+                            } focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                            value={assigneeEmail}
+                            onChange={(e) => setAssigneeEmail(e.target.value)}
+                            required
+                        />
+                        {emailSuggestions.length > 0 && (
+                            <ul className="absolute mt-1 w-full bg-white shadow-lg rounded-lg border border-gray-200 z-20">
+                                {emailSuggestions.map((email) => (
+                                    <li
+                                        key={email}
+                                        className="px-4 py-2 cursor-pointer hover:bg-blue-50"
+                                        onClick={() => setAssigneeEmail(email)}
+                                    >
+                                        {email}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        {errors.assignee_email && (
+                            <p className="text-sm text-red-500 mt-1">
+                                {errors.assignee_email}
+                            </p>
+                        )}
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-50"
                     >
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-
-                <div className="mb-3 position-relative">
-                    <label htmlFor="assignee_email">Assignee Email</label>
-                    <input
-                        type="text"
-                        id="assignee_email"
-                        className={`form-control ${
-                            errors.assignee_email ? "is-invalid" : ""
-                        }`}
-                        value={assigneeEmail}
-                        onChange={(e) => setAssigneeEmail(e.target.value)}
-                        required
-                    />
-                    {emailSuggestions.length > 0 && (
-                        <ul className="list-group position-absolute w-100 z-2">
-                            {emailSuggestions.map((email) => (
-                                <li
-                                    key={email}
-                                    className="list-group-item list-group-item-action"
-                                    onClick={() => setAssigneeEmail(email)}
-                                >
-                                    {email}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                    {errors.assignee_email && (
-                        <div className="invalid-feedback">
-                            {errors.assignee_email}
-                        </div>
-                    )}
-                </div>
-
-                <button
-                    type="submit"
-                    className="btn btn-primary"
-                    disabled={loading}
-                >
-                    {loading ? "Creating..." : "Create Task"}
-                </button>
-            </form>
+                        {loading ? "Creating..." : "Create Task"}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };
